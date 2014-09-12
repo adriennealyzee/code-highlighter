@@ -5,17 +5,18 @@ class DecorationExampleView extends View
   @content: ->
     @div class: 'decoration-example tool-panel panel-bottom padded', =>
       @div class: 'btn-toolbar', =>
-        @div class: 'btn-group', =>
-          @button outlet: 'gutterToggle', class: 'btn', 'Toggle Gutter Decoration'
-          @button outlet: 'gutterColorCycle', class: 'btn', 'Cycle Gutter Color'
+        #@div class: 'btn-group', =>
+          #@button outlet: 'gutterToggle', class: 'btn', 'Toggle Gutter Decoration'
+          #@button outlet: 'gutterColorCycle', class: 'btn', 'Cycle Gutter Color'
+
+        #@div class: 'btn-group', =>
+          #@button outlet: 'lineToggle', class: 'btn', 'Toggle Lines Decoration'
+          #@button outlet: 'lineColorCycle', class: 'btn', 'Cycle Lines Color'
 
         @div class: 'btn-group', =>
-          @button outlet: 'lineToggle', class: 'btn', 'Toggle Lines Decoration'
-          @button outlet: 'lineColorCycle', class: 'btn', 'Cycle Lines Color'
-
-        @div class: 'btn-group', =>
-          @button outlet: 'highlightToggle', class: 'btn', 'Toggle Highlight Decoration'
-          @button outlet: 'highlightColorCycle', class: 'btn', 'Cycle Highlight Color'
+          @button outlet: 'highlightToggle', class: 'btn', 'Add highlight'
+          @button outlet: 'removeHighlight', class: 'btn', 'Remove highlight'
+          #@button outlet: 'highlightColorCycle', class: 'btn', 'Cycle Highlight Color'
 
   colors: ['green', 'blue', 'red']
   randomizeColors: true
@@ -23,21 +24,28 @@ class DecorationExampleView extends View
   initialize: (serializeState) ->
     @decorationsByEditorId = {}
     @toggleButtons =
-      line: @lineToggle
-      gutter: @gutterToggle
+      #line: @lineToggle
+      #gutter: @gutterToggle
       highlight: @highlightToggle
 
-    @lineToggle.on 'click', => @toggleDecorationForCurrentSelection('line')
-    @gutterToggle.on 'click', => @toggleDecorationForCurrentSelection('gutter')
-    @highlightToggle.on 'click', => @toggleDecorationForCurrentSelection('highlight')
+    #@lineToggle.on 'click', => @toggleDecorationForCurrentSelection('line')
+    #@gutterToggle.on 'click', => @toggleDecorationForCurrentSelection('gutter')
+    @highlightToggle.on 'click', => @createDecorationForCurrentSelection('highlight')
+    @removeHighlight.on 'click', => @destroyDecorationsAtCursor()
 
-    @lineColorCycle.on 'click', => @cycleDecorationColor('line')
-    @gutterColorCycle.on 'click', => @cycleDecorationColor('gutter')
-    @highlightColorCycle.on 'click', => @cycleDecorationColor('highlight')
+    #@lineColorCycle.on 'click', => @cycleDecorationColor('line')
+    #@gutterColorCycle.on 'click', => @cycleDecorationColor('gutter')
+    #@highlightColorCycle.on 'click', => @cycleDecorationColor('highlight')
 
     atom.workspaceView.on 'pane-container:active-pane-item-changed', => @updateToggleButtonStates()
 
   ## Decoration API methods
+
+  destroyDecorationsAtCursor: ->
+    markersArr = @getMarkersAtCursor()
+    for marker in markersArr
+      # destroy marker if the marker is a relevant market (i.e. highlighted by user)
+      @destroyMarker(marker) if marker.getProperties()['addy-highlight']
 
   createDecorationFromCurrentSelection: (editor, type) ->
     # Get the user's selection from the editor
@@ -45,6 +53,7 @@ class DecorationExampleView extends View
 
     # create a marker that never invalidates that folows the user's selection range
     marker = editor.markBufferRange(range, invalidate: 'never')
+    marker.bufferMarker.setProperties('addy-highlight': true)
 
     # create a decoration that follows the marker. A Decoration object is returned which can be updated
     decoration = editor.decorateMarker(marker, type: type, class: "#{type}-#{@getRandomColor()}")
@@ -54,13 +63,22 @@ class DecorationExampleView extends View
     # This allows you to change the class on the decoration
     decoration.update(newDecorationParams)
 
-  destroyDecorationMarker: (decoration) ->
-    # Destory the decoration's marker because we will no longer need it.
+  destroyMarker: (marker) ->
+    # Destroy the decoration's marker because we will no longer need it.
     # This will destroy the decoration as well. Destroying the marker is the
     # recommended way to destory the decorations.
-    decoration.getMarker().destroy()
+    marker.destroy()
+
+  getMarkersAtCursor: () ->
+    editor = @getEditor()
+    buffer = editor.buffer
+    point = editor.getCursor().getBufferPosition()
+    markers = buffer.findMarkers(containsPoint: point)
 
   ## Button handling methods
+
+  createDecorationForCurrentSelection: ->
+    @createDecorationFromCurrentSelection(@getEditor(), 'highlight')
 
   toggleDecorationForCurrentSelection: (type) ->
     return unless editor = @getEditor()
