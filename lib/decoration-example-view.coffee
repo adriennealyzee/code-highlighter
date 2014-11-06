@@ -48,15 +48,19 @@ class DecorationExampleView extends View
       @destroyMarker(marker) if marker.getProperties()['addy-highlight']
 
   createDecorationFromCurrentSelection: (editor, type) ->
+    color = @getRandomColor()
+
     # Get the user's selection from the editor
     range = editor.getSelectedBufferRange()
 
     # create a marker that never invalidates that folows the user's selection range
     marker = editor.markBufferRange(range, invalidate: 'never')
-    marker.bufferMarker.setProperties('addy-highlight': true)
+    marker.bufferMarker.setProperties('addy-highlight': color)
+
+    #marker.bufferMarker.setProperties('color': color)
 
     # create a decoration that follows the marker. A Decoration object is returned which can be updated
-    decoration = editor.decorateMarker(marker, type: type, class: "#{type}-#{@getRandomColor()}")
+    decoration = editor.decorateMarker(marker, type: type, class: "#{type}-#{color}")
     decoration
 
   updateDecoration: (decoration, newDecorationParams) ->
@@ -155,6 +159,25 @@ class DecorationExampleView extends View
     markers = atom.workspace.getActiveEditor()
     addy_markers = editor.buffer.getMarkers().filter (x) ->
       x.getProperties()['addy-highlight']
+
+  # takes an array of addy_markers
+  # and returns an array of objects
+  # each object consists of following:
+  # 1) string representing color
+  # 2) range object of marker
+  serialized_markers = (addy_markers) ->
+    addy_markers.map (marker) ->
+      return { color: marker.getProperties()['addy-highlight'], range: marker.range.serialize() }
+    #
+    # marker_arr = []
+    #
+    # for item in addy_markers
+    #   range = item.range
+    #   color = item.color # how to get
+    #
+    #   marker_arr.push()
+
+
 
 
 
