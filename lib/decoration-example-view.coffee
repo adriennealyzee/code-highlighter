@@ -5,17 +5,18 @@ class DecorationExampleView extends View
   @content: ->
     @div class: 'decoration-example tool-panel panel-bottom padded', =>
       @div class: 'btn-toolbar', =>
-        @div class: 'btn-group', =>
-          @button outlet: 'gutterToggle', class: 'btn', 'Toggle Gutter Decoration'
-          @button outlet: 'gutterColorCycle', class: 'btn', 'Cycle Gutter Color'
+        #@div class: 'btn-group', =>
+          #@button outlet: 'gutterToggle', class: 'btn', 'Toggle Gutter Decoration'
+          #@button outlet: 'gutterColorCycle', class: 'btn', 'Cycle Gutter Color'
+
+        #@div class: 'btn-group', =>
+          #@button outlet: 'lineToggle', class: 'btn', 'Toggle Lines Decoration'
+          #@button outlet: 'lineColorCycle', class: 'btn', 'Cycle Lines Color'
 
         @div class: 'btn-group', =>
-          @button outlet: 'lineToggle', class: 'btn', 'Toggle Lines Decoration'
-          @button outlet: 'lineColorCycle', class: 'btn', 'Cycle Lines Color'
-
-        @div class: 'btn-group', =>
-          @button outlet: 'highlightToggle', class: 'btn', 'Toggle Highlight Decoration'
-          @button outlet: 'highlightColorCycle', class: 'btn', 'Cycle Highlight Color'
+          @button outlet: 'highlightToggle', class: 'btn', 'Add highlight'
+          @button outlet: 'removeHighlight', class: 'btn', 'Remove highlight'
+          #@button outlet: 'highlightColorCycle', class: 'btn', 'Cycle Highlight Color'
 
   colors: ['green', 'blue', 'red']
   randomizeColors: true
@@ -73,7 +74,7 @@ class DecorationExampleView extends View
     buffer = editor.buffer
     point = editor.getCursor().getBufferPosition()
     markers = buffer.findMarkers(containsPoint: point)
-    JSON.stringify(markers)
+
 
   ## Button handling methods
 
