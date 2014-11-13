@@ -53,15 +53,17 @@ class DecorationExampleView extends View
     # Get the user's selection from the editor
     range = editor.getSelectedBufferRange()
 
+    @createHighlight(color, range)
+
+  createHighlight: (color, range) ->
+    editor = @getEditor()
+
     # create a marker that never invalidates that folows the user's selection range
     marker = editor.markBufferRange(range, invalidate: 'never')
     marker.bufferMarker.setProperties('addy-highlight': color)
 
-    #marker.bufferMarker.setProperties('color': color)
-
     # create a decoration that follows the marker. A Decoration object is returned which can be updated
-    decoration = editor.decorateMarker(marker, type: type, class: "#{type}-#{color}")
-    decoration
+    decoration = editor.decorateMarker(marker, type: 'highlight', class: "highlight-#{color}")
 
   updateDecoration: (decoration, newDecorationParams) ->
     # This allows you to change the class on the decoration
@@ -182,5 +184,14 @@ class DecorationExampleView extends View
 
 
 ### !@#$%>haightlighter infos
-highlight all my favorite words ['cheese', 'bread']
+[
+{ color: red, range: [0,10]},
+{ color: blu, range: [0,10]}
+]
+
+[
+ {"color":"blue","range":[[159,5],[159,32]]},
+ {"color":"blue","range":[[160,11],[160,41]]}
+]
+
 ###
