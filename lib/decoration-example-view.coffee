@@ -1,4 +1,4 @@
-{View} = require 'atom'
+{View, Range} = require 'atom'
 
 module.exports =
 class DecorationExampleView extends View
@@ -48,6 +48,10 @@ class DecorationExampleView extends View
       @destroyMarker(marker) if marker.getProperties()['addy-highlight']
 
   createDecorationFromCurrentSelection: (editor, type) ->
+
+    # cereal = '[{"color":"red","range":[[0,0],[58,0]]}, {"color": "blue", "range":[[61,3],[66,3]]}]'
+    # @deserialize_markers(JSON.parse(cereal))
+
     color = @getRandomColor()
 
     # Get the user's selection from the editor
@@ -57,7 +61,7 @@ class DecorationExampleView extends View
 
   createHighlight: (color, range) ->
     editor = @getEditor()
-
+    console.log color, range
     # create a marker that never invalidates that folows the user's selection range
     marker = editor.markBufferRange(range, invalidate: 'never')
     marker.bufferMarker.setProperties('addy-highlight': color)
@@ -179,17 +183,18 @@ class DecorationExampleView extends View
   # put this at the bottom for comments
 
 
-  cereal = serialized_markers(addy_markers)
-  cereal_comments = JSON.stringify(cereal)
-  # put cereal_comments into end of file
-  cereal_objects = JSON.parse(cereal_comments)
+  # cereal = serialized_markers(addy_markers)
+  # cereal_comments = JSON.stringify(cereal)
+  # # put cereal_comments into end of file
+  # cereal_objects = JSON.parse(cereal_comments)
 
 
   # takes in serialized_markers
-  deserialize_markers = (serialized_markers) ->
-    marker_arr = []
+  deserialize_markers: (serialized_markers) ->
+    self = this
     serialized_markers.map (serialized_highlight) ->
-      @createHighlight(serialized_highlight.color, Range.deserialize(serialized_highlight.range))
+      console.log "RANGEX", new Range(serialized_highlight.range)
+      self.createHighlight(serialized_highlight.color, Range.deserialize(serialized_highlight.range))
 
 
 
