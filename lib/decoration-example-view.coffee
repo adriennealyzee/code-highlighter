@@ -170,28 +170,32 @@ class DecorationExampleView extends View
   serialized_markers = (addy_markers) ->
     addy_markers.map (marker) ->
       return { color: marker.getProperties()['addy-highlight'], range: marker.range.serialize() }
-    #
-    # marker_arr = []
-    #
-    # for item in addy_markers
-    #   range = item.range
-    #   color = item.color # how to get
-    #
-    #   marker_arr.push()
 
+  # takes in comments at the bottom
+  # array of colors and ranges (serialized_markers)
+  # adds to buffer
+
+
+  # put this at the bottom for comments
+
+
+  cereal = serialized_markers(addy_markers)
+  cereal_comments = JSON.stringify(cereal)
+  # put cereal_comments into end of file
+  cereal_objects = JSON.parse(cereal_comments)
+
+
+  # takes in serialized_markers
+  deserialize_markers = (serialized_markers) ->
+    marker_arr = []
+    serialized_markers.map (object) ->
+      marker_arr.push(createDecoration(object[0], object[1] ))
+
+    return marker_arr
 
 
 
 
 ### !@#$%>haightlighter infos
-[
-{ color: red, range: [0,10]},
-{ color: blu, range: [0,10]}
-]
-
-[
- {"color":"blue","range":[[159,5],[159,32]]},
- {"color":"blue","range":[[160,11],[160,41]]}
-]
-
+highlight all my favorite words ['cheese', 'bread']
 ###

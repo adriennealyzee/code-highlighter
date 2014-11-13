@@ -1,5 +1,5 @@
 {
-  "name": "decoration-example",
+  "name": "addy-highlight",
   "main": "./lib/decoration-example",
   "version": "0.0.0",
   "description": "Exercising Atom's Decoration API",
