@@ -188,10 +188,8 @@ class DecorationExampleView extends View
   # takes in serialized_markers
   deserialize_markers = (serialized_markers) ->
     marker_arr = []
-    serialized_markers.map (object) ->
-      marker_arr.push(createDecoration(object[0], object[1] ))
-
-    return marker_arr
+    serialized_markers.map (serialized_highlight) ->
+      @createHighlight(serialized_highlight.color, Range.deserialize(serialized_highlight.range))
 
 
 
