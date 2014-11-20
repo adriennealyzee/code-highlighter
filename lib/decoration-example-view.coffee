@@ -16,6 +16,7 @@ class DecorationExampleView extends View
         @div class: 'btn-group', =>
           @button outlet: 'highlightToggle', class: 'btn', 'Add highlight'
           @button outlet: 'removeHighlight', class: 'btn', 'Remove highlight'
+          @button outlet: 'testButton', class: 'btn', 'Test'
           #@button outlet: 'highlightColorCycle', class: 'btn', 'Cycle Highlight Color'
 
   colors: ['green', 'blue', 'red']
@@ -32,6 +33,7 @@ class DecorationExampleView extends View
     #@gutterToggle.on 'click', => @toggleDecorationForCurrentSelection('gutter')
     @highlightToggle.on 'click', => @createDecorationForCurrentSelection('highlight')
     @removeHighlight.on 'click', => @destroyDecorationsAtCursor()
+    @testButton.on 'click', => @testFunction()
 
     #@lineColorCycle.on 'click', => @cycleDecorationColor('line')
     #@gutterColorCycle.on 'click', => @cycleDecorationColor('gutter')
@@ -196,7 +198,10 @@ class DecorationExampleView extends View
       console.log "RANGEX", new Range(serialized_highlight.range)
       self.createHighlight(serialized_highlight.color, Range.deserialize(serialized_highlight.range))
 
-
+  testFunction: ->
+    commenting = require('./commenting.coffee')
+    console.log('hey you clicked the Test button:')
+    console.log(commenting.commentString(@getEditor()))
 
 
 ### !@#$%>haightlighter infos
