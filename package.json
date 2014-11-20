@@ -8,5 +8,7 @@
   "engines": {
     "atom": ">0.109.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "underscore-plus": "^1.6.1"
+  }
 }
