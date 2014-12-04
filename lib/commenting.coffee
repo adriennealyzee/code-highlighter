@@ -12,6 +12,6 @@ class Commenting
     _.valueForKeyPath(properties, 'editor.commentStart')
 
   commentate: (line) ->
-    return getCommentStartString() + line
+    return @getCommentStartString() + line
 
 module.exports = Commenting

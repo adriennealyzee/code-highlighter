@@ -199,9 +199,15 @@ class DecorationExampleView extends View
       self.createHighlight(serialized_highlight.color, Range.deserialize(serialized_highlight.range))
 
   testFunction: ->
-    commenting = require('./commenting.coffee')
+    Commenting = require './commenting.coffee'
     console.log('hey you clicked the Test button:')
-    console.log(commenting.commentString(@getEditor()))
+    commentingTool = new Commenting @getEditor()
+
+    console.log('the comment symbol is:', commentingTool.getCommentStartString())
+
+    str = "hi im a line of text"
+
+    console.log('before:', str, 'after:', commentingTool.commentate(str));
 
 
 ### !@#$%>haightlighter infos
