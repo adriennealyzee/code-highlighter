@@ -1,5 +1,9 @@
 # Text Highlighter for the Atom Text Editor
 
+ATom-highlight enables users to highlight code in the Atom editor.
+
+Use cases: Flagging a possible bug, an unfinished function you want to come back to, flagging code that may need to be re-factored
+
 ![decoration-example](https://cloud.githubusercontent.com/assets/69169/3518389/d9a8344e-06ff-11e4-9283-c32c9d99e0c1.gif)
 
 Uses decoration API.
