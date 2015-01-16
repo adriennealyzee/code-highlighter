@@ -1,6 +1,6 @@
 # Text Highlighter for the Atom Text Editor
 
-ATom-highlight enables users to highlight code in the Atom editor.
+Atom-highlight enables users to highlight code in the Atom editor.
 
 Use cases: Flagging a possible bug, an unfinished function you want to come back to, flagging code that may need to be re-factored
 
